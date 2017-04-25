@@ -13,25 +13,19 @@ function Sphere(center, radius, surfaceColor, reflectivity, opacity, emissionCol
   this.intersect = function(rayorig, raydir) {
 
     // vector pointing from center to rayorigin
-    var l = subtract(center, rayorig)
-    var tca = dot(l, raydir)
-    if (tca < 0) return false;
+    var l = center.subtract(rayorig)
+    var tca = l.dot(raydir)
+    if (tca < 0) return { intersect: false }
     // d^2 + tca^2 = L^2
-    var d2 = dot(l, l) - tca * tca
-    if (d2 > this.radius2) return false
+    var d2 = l.dot(l) - tca * tca
+    if (d2 > this.radius2) return { intersect: false }
     var thc = Math.sqrt(this.radius2 - d2)
     var t0 = tca - thc,
-        t1 = tca + thc
-
-    return true
-  }
-
-  // Fixme vector3 prototype
-  function subtract (v1, v2) {
-    return Array(v1[0] - v2[0], v1[1] - v2[1], v1[2] - v2[2])
-  }
-
-  function dot(v1, v2) {
-    return (v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2])
+      t1 = tca + thc
+    return {
+      intersect: true,
+      t0: t0,
+      t1: t1
+    }
   }
 }

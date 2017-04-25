@@ -35,7 +35,7 @@ Vector3.prototype = {
     return this.divideScalar(this.length())
   },
 
-  copy: function ( v ) {
+  copy: function (v) {
     this.x = v.x
     this.y = v.y
     this.z = v.z
@@ -43,14 +43,14 @@ Vector3.prototype = {
     return this
   },
 
-  multiply : function (v) {
+  multiply: function (v) {
     this.x *= v.x
     this.y *= v.y
     this.z *= v.z
     return this
   },
 
-  multiplyScalar : function (scalar) {
+  multiplyScalar: function (scalar) {
     this.x *= scalar
     this.y *= scalar
     this.z *= scalar
@@ -68,7 +68,7 @@ Vector3.prototype = {
 
   divideScalar: function (scalar) {
     if (scalar !== 0) {
-      var invScalar =  1 / scalar
+      var invScalar = 1 / scalar
       this.x *= invScalar
       this.y *= invScalar
       this.z *= invScalar
@@ -81,25 +81,23 @@ Vector3.prototype = {
     return this
   },
 
-  length : function () {
-    return Math.sqrt(this.length2)
+  length: function () {
+    return Math.sqrt(this.length2())
   },
 
-  length2 : function () {
-    return (this.x*this.x + this.y*this.y + this.z * this.z)
+  length2: function () {
+    return this.x * this.x + this.y * this.y + this.z * this.z
   },
 
   setLength: function (l) {
     var origLength = this.length()
-    if ( origLength !== 0 && l !== origLength) {
-      this.multiplyScalar(l/origLength)
+    if (origLength !== 0 && l !== origLength) {
+      this.multiplyScalar(l / origLength)
     }
     return this
   },
 
-  dot : function (v) {
-    return this.x * v.x + this.y * v.y + this.z * v.z;
+  dot: function (v) {
+    return this.x * v.x + this.y * v.y + this.z * v.z
   }
-
-
 }
