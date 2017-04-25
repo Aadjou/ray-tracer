@@ -1,18 +1,31 @@
 function Vector3(x, y, z) {
+
   this.x = x
   this.y = y
   this.z = z
 
   this.add = function(v) {
-    return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z )
+    this.x += v.x
+    this.y += v.y
+    this.z += v.z
+  }
+
+  this.addScalar = function(scalar) {
+    this.x += scalar
+    this.y += scalar
+    this.z += scalar
   }
 
   this.subtract = function(v) {
-    return new Vector3(this.x - v.x, this.y-v.y, this.z - v.z )
+    this.x -= v.x
+    this.y -= v.y
+    this.z -= v.z
   }
 
   this.divide = function(scalar) {
-    return new Vector3(this.x/scalar, this.y/scalar, this.z/scalar)
+    this.x /= v.x
+    this.y /= v.y
+    this.z /= v.z
   }
 
   this.magnitude = function() {
@@ -21,7 +34,7 @@ function Vector3(x, y, z) {
 
   this.normalized = function() {
     var scalar = this.magnitude()
-    return this.divide(scalar)
+    this.divide(scalar)
   }
 
   // Return the angle of the vector in radians
@@ -30,5 +43,4 @@ function Vector3(x, y, z) {
     return 0
   }
 
-  this.zero = function() {return new Vector3(0, 0, 0)}
 }
