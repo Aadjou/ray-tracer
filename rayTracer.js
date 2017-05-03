@@ -2,6 +2,7 @@
 // Translated from C++ code (scratchapixel.com)
 
 var MAX_RAY_DEPTH = 5
+var BACKGROUND_COLOR = Array(0, 0, 0, 255)
 
 function test () {
   var c = document.getElementById("myCanvas");
@@ -16,27 +17,54 @@ function mix (a, b, mix) {
   return b * mix + a * (1-mix)
 }
 
-function trace(rayorig, raydir, geometries, depth) {
-  var tnear = Infinity
+function trace(rayorig, raydir, geometries, depth, bgColor) {
+  var bgColor = bgColor || BACKGROUND_COLOR
+  var tNear = Infinity
   var geoNear = undefined
 
   for (var i = 0; i < geometries.length; i++) {
     var result = geometries[i].intersect(rayorig, raydir)
     if (result.intersect) {
       var dist = result.t0 < 0 ? result.t1 : result.t0
-      if (dist < tnear) {
-        tnear = dist
+      if (dist < tNear) {
+        tNear = dist
         geoNear = geometries[i]
       }
     }
   }
 
-
-  if(geoNear === undefined) return Array(0, 0, 255, 0)
+  // if there is no intersection, return black or background color
+  if(geoNear === undefined) return bgColor
   else {
     var col = geoNear.surfaceColor
     return Array(Math.round(col.x * 256), Math.round(col.y * 256), Math.round(col.z * 256), 50)
   }
+
+  // Color of the ray/surface of the object intersected with the ray
+  var surfaceColor = 0
+  // Point of intersection
+  var pHit = rayorig.add(raydir.multiplyScalar(tNear))
+  // Normal at the intersection point
+  var nHit = pHit.subtract(sphere.center).normalize()
+
+  // If the normal and the view direction are not opposite to each other
+  // reverse the normal direction. That also means we are inside the sphere so set
+  // the inside bool to true. Finally reverse the sign of IdotN which we want positive
+
+  // add some bias to the point from which we will be tracing
+  var bias = 1e-4
+  var inside = false
+
+  if (raydir.dot(nHit) > 0) {
+    nHit = nHit.multiplyScalar(-1)
+    inside = true
+  }
+  if ((sphere.opacity > 0 || sphere.reflectivity > 0) && depth < MAX_RAY_DEPTH) {
+
+  } else {
+    // It's a diffuse object, no need to raytrace any further
+  }
+
 
 }
 
